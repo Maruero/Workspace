@@ -3,8 +3,6 @@ package br.diastecnologia.studioisabeli.controllers;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.util.CookieGenerator;
-
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -22,8 +20,15 @@ import br.diastecnologia.studioisabeli.session.StudioSession;
 @Resource
 public class HomeController extends Controller{
 	
+	protected CustomerTokenDAO customerTokenDAO;
+	protected TipDAO tipDAO;
+	protected CustomerScrapDAO customerScrapDAO;
+	
 	public HomeController(HttpServletResponse _response, Result _result, StudioSession _session, ServletContext _context, CustomerTokenDAO _customerTokenDAO, TipDAO _tipDAO, CustomerScrapDAO _customerScrapDAO){
-		super(_response, _result, _session, _context, _customerTokenDAO, _tipDAO, _customerScrapDAO);
+		super(_response, _result, _session, _context);
+		this.customerTokenDAO = _customerTokenDAO;
+		this.tipDAO = _tipDAO;
+		this.customerScrapDAO = _customerScrapDAO;
 	}
 	
 	@Path("/")

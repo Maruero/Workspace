@@ -1,6 +1,6 @@
 package br.diastecnologia.studioisabeli.beans;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Week {
 

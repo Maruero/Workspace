@@ -9,5 +9,7 @@
 </head>
 <body>
 	Menu
+	<br>
+	<a href="agenda-do-studio">Agenda do Studio</a>
 </body>
 </html>

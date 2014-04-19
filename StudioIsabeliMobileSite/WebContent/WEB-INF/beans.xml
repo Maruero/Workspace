@@ -29,6 +29,19 @@
 		<property name="dBConnection" ref="datasource"/>
 	</bean>
 	
+	<bean id="studioScheduleDao" class="br.diastecnologia.studioisabeli.daos.StudioScheduleDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="customerClassDao" class="br.diastecnologia.studioisabeli.daos.CustomerClassDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="studioScheduleBusiness" class="br.diastecnologia.studioisabeli.business.StudioScheduleBusiness">
+		<constructor-arg ref="studioScheduleDao"/>
+		<constructor-arg ref="customerClassDao"/>
+	</bean>
+	
 	<context:component-scan base-package="br.diastecnologia.studioisabeli" />
 
 </beans>

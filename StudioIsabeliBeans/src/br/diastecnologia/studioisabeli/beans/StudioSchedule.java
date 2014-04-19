@@ -1,5 +1,7 @@
 package br.diastecnologia.studioisabeli.beans;
 
+import java.util.List;
+
 public class StudioSchedule {
 
 	private Integer StudioScheduleID;
@@ -8,6 +10,14 @@ public class StudioSchedule {
 	private Integer EndHour;
 	private Integer CustomersMaxCount;
 	
+	private List<CustomerClass> classes;
+	
+	public List<CustomerClass> getClasses() {
+		return classes;
+	}
+	public void setClasses(List<CustomerClass> classes) {
+		this.classes = classes;
+	}
 	public Integer getStudioScheduleID() {
 		return StudioScheduleID;
 	}
