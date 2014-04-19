@@ -1,4 +1,4 @@
-package br.diastecnologia.studioisabeli.beans;
+package br.diastecnologia.studioisabeli.enums;
 
 public enum ClassType {
 

@@ -8,14 +8,10 @@
 	<title>Studio Isabeli Vilhena</title>
 </head>
 <body>
-	Menu
+	Ranking
 	<br>
-	<a href="agenda-do-studio">Agenda do Studio</a>
-	<br>
-	<a href="sua-agenda">Sua Agenda</a>
-	<br>
-	<a href="suas-medalhas">Suas Medalhas</a>
-	<br>
-	<a href="ranking">Ranking</a>
+	<c:forEach items="${ranking}" var="position">
+		${position.name} - Gold: ${position.goldCount} - Silver: ${position.silverCount} - Bronze: ${position.bronzeCount} <br>
+	</c:forEach>
 </body>
 </html>

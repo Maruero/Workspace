@@ -1,5 +1,7 @@
 package br.diastecnologia.studioisabeli.beans;
 
+import br.diastecnologia.studioisabeli.enums.ClassType;
+
 public class CustomerClass {
 
 	private Integer customerID;

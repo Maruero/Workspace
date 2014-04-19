@@ -1,5 +1,7 @@
 package br.diastecnologia.studioisabeli.beans;
 
+import br.diastecnologia.studioisabeli.enums.PhotoType;
+
 public class Photo {
 
 	private Integer customerID;

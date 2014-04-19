@@ -27,12 +27,23 @@ public class StudioScheduleBusiness {
 		return studioScheduleDAO.getStudioSchedules();
 	}
 	
-	public List<StudioSchedule> getWeekStudioSchedule( Date middle ){
+	public List<StudioSchedule> getWeekStudioSchedule( Date middle , Integer customerID){
 		List<StudioSchedule> sches = studioScheduleDAO.getStudioSchedules();
 		Week week = getWeek(middle);
 		customerClassDAO.addCustomerClasses(week.getWeekID());
-		List<CustomerClass> weekClasses = customerClassDAO.getClassesOfWeek(week.getWeekID());
+		List<CustomerClass> weekClasses = null;
+		if( customerID != null && customerID != 0 ){
+			weekClasses = customerClassDAO.getClassesOfWeek(week.getWeekID(), customerID);
+		}else{
+			weekClasses = customerClassDAO.getClassesOfWeek(week.getWeekID());
+		}
 		return bind(sches, weekClasses);
+	}
+	
+	public List<CustomerClass> getWeekCustomerClass( Date middle){
+		Week week = getWeek(middle);
+		customerClassDAO.addCustomerClasses(week.getWeekID());
+		return customerClassDAO.getClassesOfWeek(week.getWeekID());
 	}
 	
 	private List<StudioSchedule> bind( List<StudioSchedule> sches, List<CustomerClass> weekClasses ){

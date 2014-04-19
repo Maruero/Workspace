@@ -37,6 +37,10 @@
 		<property name="dBConnection" ref="datasource"/>
 	</bean>
 	
+	<bean id="medalDao" class="br.diastecnologia.studioisabeli.daos.MedalDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
 	<bean id="studioScheduleBusiness" class="br.diastecnologia.studioisabeli.business.StudioScheduleBusiness">
 		<constructor-arg ref="studioScheduleDao"/>
 		<constructor-arg ref="customerClassDao"/>

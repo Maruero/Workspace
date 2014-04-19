@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import br.com.caelum.vraptor.ioc.Component;
 import br.diastecnologia.studioisabeli.beans.ClassStatus;
-import br.diastecnologia.studioisabeli.beans.ClassType;
 import br.diastecnologia.studioisabeli.beans.CustomerClass;
+import br.diastecnologia.studioisabeli.enums.ClassType;
 
 @Component
 public class CustomerClassDAO extends JdbcDaoSupport {
@@ -21,6 +21,14 @@ public class CustomerClassDAO extends JdbcDaoSupport {
 	@Autowired
 	public void setDBConnection( DataSource datasource ) {
 		setDataSource( datasource );
+	}
+	
+	public List<CustomerClass> getClassesOfWeek( Integer weekID , Integer customerID ){
+		final String SQL = "select c.CustomerID, cs.StudioScheduleID, cc.Type, cc.Status from customer c "+ 
+							"left outer join customerschedule cs on cs.CustomerID = c.CustomerID "+
+							"left outer join customerclass cc on c.CustomerID = cc.CustomerID and cc.StudioScheduleID = cs.StudioScheduleID "+
+							"where cc.WeekID = ? and cc.CustomerID = ?";
+		return getJdbcTemplate().query( SQL , customerClassMapper , weekID , customerID );
 	}
 	
 	public List<CustomerClass> getClassesOfWeek( Integer weekID ){
