@@ -17,6 +17,10 @@
 		<property name="jndiName" value="java:/comp/env/jdbc/studio" />
 	</bean>
 	
+	<bean id="connection" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:/comp/env/jdbc/studio" />
+	</bean>
+	
 	<bean id="customerTokenDao" class="br.diastecnologia.studioisabeli.daos.CustomerTokenDAO">
 		<property name="dBConnection" ref="datasource"/>
 	</bean>

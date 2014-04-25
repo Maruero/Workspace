@@ -24,6 +24,21 @@ public class MedalDAO extends JdbcDaoSupport {
 		setDataSource( datasource );
 	}
 	
+	public void addMedal( Integer customerID, String description, MedalType type ){
+		final String SQL = "insert into customermedal (CustomerID, Description, Type, Date )values(?,?,?,now())";
+		getJdbcTemplate().update( SQL , customerID, description, MedalType.getIndex(type));
+	}
+	
+	public void updateMedal( CustomerMedal medal ){
+		final String SQL = "update customermedal set Description = ?, Type = ? where MedalID = ?";
+		getJdbcTemplate().update( SQL , medal.getDescription(), MedalType.getIndex(medal.getMedal().getType()), medal.getMedalID() );
+	}
+	
+	public void removeMedal( CustomerMedal medal ){
+		final String SQL = "delete from customermedal where MedalID = ?";
+		getJdbcTemplate().update( SQL , medal.getMedalID() );
+	}
+	
 	public List<CustomerMedal> getMedals( Integer customerID ){
 		final String SQL = "select cm.CustomerID, cm.MedalID, cm.Date, cm.Description, m.Type, m.Points from customermedal cm " +
 							"join medal m on m.Type = cm.Type where cm.CustomerID = ? order by cm.Date desc";

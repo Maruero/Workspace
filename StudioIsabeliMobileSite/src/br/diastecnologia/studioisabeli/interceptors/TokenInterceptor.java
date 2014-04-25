@@ -27,7 +27,6 @@ public class TokenInterceptor implements Interceptor{
 		this.session = _session;
 		this.customerTokenDAO = _customerTokenDAO;
 		this.result = _result;
-		
 	}
 
 	public boolean accepts(ResourceMethod method) {

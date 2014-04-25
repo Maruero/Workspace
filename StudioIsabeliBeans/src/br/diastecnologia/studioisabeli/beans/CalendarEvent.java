@@ -7,6 +7,22 @@ public class CalendarEvent {
 	private String end;
 	private CalendarEventColor color;
 	private boolean allDay;
+	
+	private Integer studioScheduleID;
+	private Integer customersMaxCount;
+	
+	public Integer getStudioScheduleID() {
+		return studioScheduleID;
+	}
+	public void setStudioScheduleID(Integer studioScheduleID) {
+		this.studioScheduleID = studioScheduleID;
+	}
+	public Integer getCustomersMaxCount() {
+		return customersMaxCount;
+	}
+	public void setCustomersMaxCount(Integer customersMaxCount) {
+		this.customersMaxCount = customersMaxCount;
+	}
 	public boolean isAllDay() {
 		return allDay;
 	}

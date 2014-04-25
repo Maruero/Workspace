@@ -18,10 +18,12 @@ import br.diastecnologia.studioisabeli.session.StudioSession;
 public class RankingController extends Controller{
 
 	private MedalDAO medalDao;
+	private StudioSession session;
 	
 	public RankingController(HttpServletResponse _response, Result _result, StudioSession _session, ServletContext _context, MedalDAO _medalDao) {
-		super(_response, _result, _session, _context);
+		super(_response, _result, _context);
 		this.medalDao = _medalDao;
+		this.session = _session;
 	}
 	
 	@Path("/suas-medalhas")

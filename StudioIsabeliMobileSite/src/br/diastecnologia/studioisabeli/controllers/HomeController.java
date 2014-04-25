@@ -23,12 +23,14 @@ public class HomeController extends Controller{
 	protected CustomerTokenDAO customerTokenDAO;
 	protected TipDAO tipDAO;
 	protected CustomerScrapDAO customerScrapDAO;
+	private StudioSession session;
 	
 	public HomeController(HttpServletResponse _response, Result _result, StudioSession _session, ServletContext _context, CustomerTokenDAO _customerTokenDAO, TipDAO _tipDAO, CustomerScrapDAO _customerScrapDAO){
-		super(_response, _result, _session, _context);
+		super(_response, _result, _context);
 		this.customerTokenDAO = _customerTokenDAO;
 		this.tipDAO = _tipDAO;
 		this.customerScrapDAO = _customerScrapDAO;
+		this.session = _session;
 	}
 	
 	@Path("/")

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://cxf.apache.org/jaxws 
+	http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<bean id="datasource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:/comp/env/jdbc/studio" />
+	</bean>
+	
+	<bean id="connection" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:/comp/env/jdbc/studio" />
+	</bean>
+	
+	<bean id="customerTokenDao" class="br.diastecnologia.studioisabeli.daos.CustomerTokenDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="customerScrapDao" class="br.diastecnologia.studioisabeli.daos.CustomerScrapDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="tipDao" class="br.diastecnologia.studioisabeli.daos.TipDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="studioScheduleDao" class="br.diastecnologia.studioisabeli.daos.StudioScheduleDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="customerClassDao" class="br.diastecnologia.studioisabeli.daos.CustomerClassDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="medalDao" class="br.diastecnologia.studioisabeli.daos.MedalDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="userDao" class="br.diastecnologia.studioisabeli.daos.UserDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="customerTokenBusiness" class="br.diastecnologia.studioisabeli.business.CustomerTokenBusiness">
+		<constructor-arg ref="customerTokenDao"/>
+	</bean>
+	
+	<bean id="studioScheduleBusiness" class="br.diastecnologia.studioisabeli.business.StudioScheduleBusiness">
+		<constructor-arg ref="studioScheduleDao"/>
+		<constructor-arg ref="customerClassDao"/>
+	</bean>
+	
+	<context:component-scan base-package="br.diastecnologia.studioisabeli" />
+
+</beans>

@@ -10,7 +10,8 @@ import br.diastecnologia.studioisabeli.beans.Customer;
 @SessionScoped
 public class StudioSession implements Serializable{
 
-	private static final long serialVersionUID = -9040025720837959398L;
+	private static final long serialVersionUID = 6359440277985845542L;
+	
 	private Customer customer;
 
 	public Customer getCustomer() {

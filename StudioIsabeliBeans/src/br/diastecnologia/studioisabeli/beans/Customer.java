@@ -9,6 +9,8 @@ public class Customer implements Serializable {
 	private Integer customerID;
 	private String name;
 	
+	public Customer(){}
+	
 	public Customer(Integer customerID, String name) {
 		super();
 		this.customerID = customerID;

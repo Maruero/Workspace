@@ -1,4 +1,4 @@
-package br.diastecnologia.studioisabeli.Utils;
+package br.diastecnologia.studioisabeli.utils;
 
 import java.text.SimpleDateFormat;
 

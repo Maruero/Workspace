@@ -21,6 +21,26 @@ public class TipDAO extends JdbcDaoSupport {
 		setDataSource( datasource );
 	}
 	
+	public List<Tip> getTips(){
+		final String SQL = "select TipID, Text, Date from tip order by Date desc";
+		return getJdbcTemplate().query( SQL, tipMapper );
+	}
+	
+	public void addTip( String text ){
+		final String SQL = "insert into tip (Text, Date) values (?,now())";
+		getJdbcTemplate().update( SQL , text );
+	}
+	
+	public void updateTip( Tip tip ){
+		final String SQL = "update tip set Text = ? where TipID = ?";
+		getJdbcTemplate().update( SQL , tip.getText(), tip.getTipID() );
+	}
+
+	public void removeTip( Tip tip ){
+		final String SQL = "delete from tip where TipID = ?";
+		getJdbcTemplate().update( SQL , tip.getTipID() );
+	}
+	
 	public Tip getLastTip(){
 		final String SQL = "select T.TipID, T.Text, T.Date, N.TipID NextTipID, P.TipID PreviousTipID from tip T " +
 							"left outer join tip N on T.TipID +1 = N.TipID " +

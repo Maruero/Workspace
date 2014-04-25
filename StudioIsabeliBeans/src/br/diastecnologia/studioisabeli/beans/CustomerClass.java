@@ -1,10 +1,18 @@
 package br.diastecnologia.studioisabeli.beans;
 
+import br.diastecnologia.studioisabeli.enums.ClassStatus;
 import br.diastecnologia.studioisabeli.enums.ClassType;
 
 public class CustomerClass {
 
 	private Integer customerID;
+	private Customer customer;
+	public Customer getCustomer() {
+		return customer;
+	}
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 	private Integer studioScheduleID;
 	private Integer weekID;
 	private ClassType type;

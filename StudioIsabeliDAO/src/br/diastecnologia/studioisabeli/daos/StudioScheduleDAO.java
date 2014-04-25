@@ -28,12 +28,33 @@ public class StudioScheduleDAO extends JdbcDaoSupport{
 		return getJdbcTemplate().query( SQL, studioScheduleMapper );
 	}
 	
+	public void addStudioSchedule( Integer weekDay, Integer beginHour, Integer endHour, Integer customerMaxCount ){
+		final String SQL = "insert into studioschedule (WeekDay, BeginHour, EndHour, CustomersMaxCount) values (?,?,?,?)";
+		getJdbcTemplate().update( SQL, weekDay, beginHour, endHour, customerMaxCount);
+	}
+	
+	public StudioSchedule getStudioSchedule( Integer scheduleID ){
+		final String SQL = "select StudioScheduleID, WeekDay, BeginHour, EndHour, CustomersMaxCount from studioschedule where StudioScheduleID = ?";
+		List<StudioSchedule> sches = getJdbcTemplate().query( SQL, studioScheduleMapper, scheduleID );
+		return sches.size() > 0 ? sches.get( 0 ) : null;
+	}
+	
+	public void updateStudioSchedule( StudioSchedule sche ){
+		final String SQL = "update studioschedule set CustomersMaxCount = ? where StudioScheduleID = ?";
+		getJdbcTemplate().update( SQL, sche.getCustomersMaxCount(), sche.getStudioScheduleID() );
+	}
+	
 	public Week getWeek( Date middleDate ){
 		final String SQL = "select WeekID, Begin, End from week  where Begin < ? and End > ?";
 		List<Week> weeks = getJdbcTemplate().query(SQL, weekScheduleMapper, middleDate, middleDate);
 		return weeks.size() > 0 ? weeks.get( 0 ) : null;
 	}
 	
+	public void removeStudioSchedule( Integer studioScheduleID ){
+		final String SQL = "delete from studioschedule where StudioScheduleID = ?";
+		getJdbcTemplate().update( SQL , studioScheduleID );
+	}
+	 
 	public void addWeek( Week week ){
 		final String SQL = "insert into week (Begin, End) values (?,?)";
 		getJdbcTemplate().update( SQL , week.getBegin(), week.getEnd() );

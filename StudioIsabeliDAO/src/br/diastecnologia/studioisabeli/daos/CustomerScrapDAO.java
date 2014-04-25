@@ -21,6 +21,31 @@ public class CustomerScrapDAO extends JdbcDaoSupport{
 		setDataSource( datasource );
 	}
 	
+	public List<CustomerScrap> getCustomerScraps(){
+		final String SQL = "select CustomerID, ScrapNumber, Date, Text from customerscrap order by Date desc";
+		return getJdbcTemplate().query( SQL , customerScrapMapper );
+	}
+	
+	public void addCustomerScrap( Integer customerID, String text ){
+		final String SQL = "insert into customerscrap ( CustomerID, ScrapNumber, Text, Date) values (?,?,?, now)";
+		getJdbcTemplate().update(SQL, customerID, getNextNumber(customerID), text );
+	}
+	
+	public void updateCustomerScrap( CustomerScrap scrap ){
+		final String SQL = "update customerscrap set Text = ? where CustomerID = ? and ScrapNumber = ?";
+		getJdbcTemplate().update( SQL , scrap.getText(), scrap.getCustomerID(), scrap.getScrapNumber() );
+	}
+	
+	public void removeCustomerScrap( CustomerScrap scrap ){
+		final String SQL = "delete from customerscrap where CustomerID = ? and ScrapNumber = ?";
+		getJdbcTemplate().update( SQL , scrap.getCustomerID(), scrap.getScrapNumber() );
+	}
+	
+	private Integer getNextNumber( Integer customerID ){
+		final String SQL = "select max(ScrapNumber) from customerscrap where CustomerID = ?";
+		return getJdbcTemplate().queryForInt( SQL , customerID );
+	}
+	
 	public CustomerScrap getLastCustomerScrap(Integer customerID ){
 		final String SQL = "select S.CustomerID, S.ScrapNumber, S.Date, S.Text, N.ScrapNumber NextScrapNumber, P.ScrapNumber PreviousScrapNumber from customerscrap S " +
 							"left outer join customerscrap N on S.CustomerID = N.CustomerID and S.ScrapNumber +1 = N.ScrapNumber " +
