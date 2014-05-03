@@ -13,6 +13,13 @@ public class ManagerSession implements Serializable{
 	private static final long serialVersionUID = -989174815003762395L;
 	private ManagerUser user;
 	private String message;
+	
+	public boolean isHasMessage() {
+		return message != null;
+	}
+
+	public void setHasMessage(boolean hasMessage) {
+	}
 
 	public String getMessage() {
 		String m = message;

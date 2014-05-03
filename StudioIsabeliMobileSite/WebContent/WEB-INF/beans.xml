@@ -45,6 +45,10 @@
 		<property name="dBConnection" ref="datasource"/>
 	</bean>
 	
+	<bean id="achievementDAO" class="br.diastecnologia.studioisabeli.daos.AchievementDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
 	<bean id="studioScheduleBusiness" class="br.diastecnologia.studioisabeli.business.StudioScheduleBusiness">
 		<constructor-arg ref="studioScheduleDao"/>
 		<constructor-arg ref="customerClassDao"/>

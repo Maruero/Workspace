@@ -1,0 +1,11 @@
+.input-group-addon{
+	min-width: 100px;
+	text-align: right;
+}
+.input-group-btn *{
+	min-width: 80px;
+}
+
+.fc-header-title h2{
+	font-size: x-large;
+}

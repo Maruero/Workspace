@@ -1,21 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Studio Isabeli Vilhena</title>
-</head>
-<body>
-	Menu
-	<br>
-	<a href="agenda-do-studio">Agenda do Studio</a>
-	<br>
-	<a href="sua-agenda">Sua Agenda</a>
-	<br>
-	<a href="suas-medalhas">Suas Medalhas</a>
-	<br>
-	<a href="ranking">Ranking</a>
-</body>
-</html>
+<tiles:insertDefinition name="studioisabeli.template">
+	
+	<tiles:putAttribute name="content">
+		<div class="jumbotron">
+		  <h2>Sua próxima aula é</h2>
+		  <p>${nextClass}</p>
+		</div>
+	</tiles:putAttribute>
+	
+</tiles:insertDefinition>

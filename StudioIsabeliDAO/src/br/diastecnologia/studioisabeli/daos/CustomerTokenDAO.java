@@ -51,7 +51,7 @@ public class CustomerTokenDAO extends JdbcDaoSupport{
 	}
 	
 	public Customer getCustomer( String token ){
-		final String SQL = "select C.CustomerID, C.Name from customer C " +
+		final String SQL = "select C.CustomerID, C.Name, C.Visible from customer C " +
 							"join customertoken T on T.CustomerID = C.CustomerID " +
 							"where T.Token = ? and C.DeletedDate is null";
 		List<Customer> customers = getJdbcTemplate().query( SQL , customerMapper, token );
@@ -59,12 +59,12 @@ public class CustomerTokenDAO extends JdbcDaoSupport{
 	}
 	
 	public List<Customer> getCustomers(){
-		final String SQL = "select CustomerID, Name from customer where DeletedDate is null order by Name";
+		final String SQL = "select CustomerID, Name, Visible from customer where DeletedDate is null order by Name";
 		return getJdbcTemplate().query( SQL,  customerMapper );
 	}
 	
 	public Customer getCustomer( Integer customerID ){
-		final String SQL = "select CustomerID, Name from customer " +
+		final String SQL = "select CustomerID, Name, Visible from customer " +
 							"where CustomerID = ? and DeletedDate is null";
 		List<Customer> customers = getJdbcTemplate().query( SQL , customerMapper, customerID );
 		return customers.size() > 0 ? customers.get( 0 ) : null;
@@ -81,8 +81,8 @@ public class CustomerTokenDAO extends JdbcDaoSupport{
 	}
 	
 	public void updateCustomer( Customer customer ){
-		final String SQL = "update customer set Name = ? where CustomerID = ?";
-		getJdbcTemplate().update( SQL , customer.getName() , customer.getCustomerID() );
+		final String SQL = "update customer set Name = ?, Visible =? where CustomerID = ?";
+		getJdbcTemplate().update( SQL , customer.getName() , customer.isVisible(), customer.getCustomerID() );
 	}
 	
 	public CustomerToken addCustomerToken( CustomerToken customerToken ){
@@ -97,7 +97,9 @@ public class CustomerTokenDAO extends JdbcDaoSupport{
 	
 	private static RowMapper<Customer> customerMapper = new RowMapper<Customer>() {
 		public Customer mapRow(ResultSet result, int arg1) throws SQLException {
-			return new Customer(result.getInt( "CustomerID" ) , result.getString( "Name" ));
+			Customer customer = new Customer(result.getInt( "CustomerID" ) , result.getString( "Name" ));
+			customer.setVisible( result.getBoolean( "Visible" ));
+			return customer;
 		}
 	};
 	

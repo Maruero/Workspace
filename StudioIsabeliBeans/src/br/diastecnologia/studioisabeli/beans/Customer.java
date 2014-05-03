@@ -8,7 +8,16 @@ public class Customer implements Serializable {
 	
 	private Integer customerID;
 	private String name;
+	private boolean visible;
 	
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
 	public Customer(){}
 	
 	public Customer(Integer customerID, String name) {

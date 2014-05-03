@@ -1,0 +1,35 @@
+.navbar-inverse .navbar-nav > li > a,
+.navbar-inverse .navbar-brand{
+	color: #C7C7C7;
+}
+
+.jumbotron{
+	text-align: center;
+}
+
+#footer,
+.btn-primary,
+.panel-primary{
+	border-color: #606060;
+}
+
+.navbar-inverse,
+#footer,
+.btn-primary,
+.panel-primary > .panel-heading
+{
+	background-color: #606060;
+}
+
+.navbar-inverse .navbar-toggle{
+	border-color: #fff;
+}
+
+.ui-dialog .ui-dialog-title,
+#footer > .container > .text-muted{
+	color: #fff;
+}
+
+.ui-draggable .ui-dialog-titlebar{
+	background-color: #000;
+}

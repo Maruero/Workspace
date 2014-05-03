@@ -23,6 +23,22 @@ public class StudioScheduleDAO extends JdbcDaoSupport{
 		setDataSource( datasource );
 	}
 	
+	public Date getNextClass( Integer customerID ){
+		final String SQL = "select date_add(adddate(w.Begin, ss.WeekDay), INTERVAL ss.BeginHour HOUR) as date from customerclass cc "+
+							"join week w on cc.WeekID = w.WeekID "+
+							"join studioschedule ss on ss.StudioScheduleID = cc.StudioScheduleID "+
+							"where CustomerID = ? "+
+							"and date_add(adddate(w.Begin, ss.WeekDay), INTERVAL ss.BeginHour HOUR) > now() "+
+							"order by date_add(adddate(w.Begin, ss.WeekDay), INTERVAL ss.BeginHour HOUR) limit 1";
+		List<Date> dates = getJdbcTemplate().query( SQL, new RowMapper<Date>(){
+			public Date mapRow(ResultSet result, int arg1) throws SQLException {
+				return result.getTimestamp( "date" );
+			}
+		}, customerID);
+		
+		return dates.size() > 0 ? dates.get( 0 ): null;
+	}
+	
 	public List<StudioSchedule> getStudioSchedules(){
 		final String SQL = "select StudioScheduleID, WeekDay, BeginHour, EndHour, CustomersMaxCount from studioschedule";
 		return getJdbcTemplate().query( SQL, studioScheduleMapper );
@@ -49,6 +65,17 @@ public class StudioScheduleDAO extends JdbcDaoSupport{
 		List<Week> weeks = getJdbcTemplate().query(SQL, weekScheduleMapper, middleDate, middleDate);
 		return weeks.size() > 0 ? weeks.get( 0 ) : null;
 	}
+	
+	public void addCustomerSchedule( Integer studioScheduleID, Integer customerID ){
+		final String SQL = "insert into customerschedule (StudioScheduleID, CustomerID) values (?,?)";
+		getJdbcTemplate().update(SQL, studioScheduleID, customerID);
+	}
+	
+	public void removeCustomerSchedule( Integer studioScheduleID, Integer customerID ){
+		final String SQL = "delete from customerschedule where StudioScheduleID = ? and CustomerID = ?";
+		getJdbcTemplate().update(SQL, studioScheduleID, customerID);
+	}
+	
 	
 	public void removeStudioSchedule( Integer studioScheduleID ){
 		final String SQL = "delete from studioschedule where StudioScheduleID = ?";

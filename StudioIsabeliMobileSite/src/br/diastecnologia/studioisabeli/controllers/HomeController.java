@@ -2,6 +2,7 @@ package br.diastecnologia.studioisabeli.controllers;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -24,13 +25,15 @@ public class HomeController extends Controller{
 	protected TipDAO tipDAO;
 	protected CustomerScrapDAO customerScrapDAO;
 	private StudioSession session;
+	private HttpSession httpSession;
 	
-	public HomeController(HttpServletResponse _response, Result _result, StudioSession _session, ServletContext _context, CustomerTokenDAO _customerTokenDAO, TipDAO _tipDAO, CustomerScrapDAO _customerScrapDAO){
+	public HomeController(HttpSession _httpSession, HttpServletResponse _response, Result _result, StudioSession _session, ServletContext _context, CustomerTokenDAO _customerTokenDAO, TipDAO _tipDAO, CustomerScrapDAO _customerScrapDAO){
 		super(_response, _result, _context);
 		this.customerTokenDAO = _customerTokenDAO;
 		this.tipDAO = _tipDAO;
 		this.customerScrapDAO = _customerScrapDAO;
 		this.session = _session;
+		this.httpSession = _httpSession;
 	}
 	
 	@Path("/")
@@ -39,6 +42,14 @@ public class HomeController extends Controller{
 			Customer customer = customerTokenDAO.getCustomer(token);
 			session.setCustomer(customer);
 		}
+	}
+	
+	@Path("/sair")
+	@Get
+	public void logout(){
+		response.addCookie( CookieUtils.toDeleteCookie());
+		httpSession.invalidate();
+		result.redirectTo(HomeController.class).token();
 	}
 	
 	@Path("/token")
@@ -62,6 +73,7 @@ public class HomeController extends Controller{
 			result.redirectTo( HomeController.class ).tip( null );
 		}else{
 			result.include( "message" , "Token inválido." );
+			result.redirectTo( HomeController.class ).token();
 		}
 	}
 	
@@ -91,7 +103,7 @@ public class HomeController extends Controller{
 		}
 		
 		if( scrap == null ){
-			result.redirectTo( HomeController.class ).scrap(null);
+			result.redirectTo( MenuController.class ).menu();
 		}else{
 			result.include( "scrap", scrap );
 		}

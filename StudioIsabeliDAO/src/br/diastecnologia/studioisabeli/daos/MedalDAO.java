@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import br.com.caelum.vraptor.ioc.Component;
+import br.diastecnologia.studioisabeli.beans.Customer;
 import br.diastecnologia.studioisabeli.beans.CustomerMedal;
 import br.diastecnologia.studioisabeli.beans.Medal;
 import br.diastecnologia.studioisabeli.dtos.CustomerRanking;
@@ -19,6 +20,10 @@ import br.diastecnologia.studioisabeli.enums.MedalType;
 @Component
 public class MedalDAO extends JdbcDaoSupport {
 
+	public static void main(String[] args){
+		System.out.println( MedalType.GOLD.name() );
+	}
+	
 	@Autowired
 	public void setDBConnection( DataSource datasource ) {
 		setDataSource( datasource );
@@ -45,13 +50,21 @@ public class MedalDAO extends JdbcDaoSupport {
 		return getJdbcTemplate().query( SQL , customerMedalMapper, customerID );
 	}
 	
+	public CustomerMedal getMedal( Integer customerID , Integer medalID ){
+		final String SQL = "select cm.CustomerID, cm.MedalID, cm.Date, cm.Description, m.Type, m.Points from customermedal cm " +
+							"join medal m on m.Type = cm.Type where cm.CustomerID = ? and cm.medalID = ? order by cm.Date desc";
+		List<CustomerMedal> medals = getJdbcTemplate().query( SQL , customerMedalMapper, customerID , medalID );
+		return medals.size() > 0 ? medals.get( 0 ) : null;
+	}
+	
 	public List<CustomerRanking> getRanking( ){
-		final String SQL = "select c.Name, count(g.Type) Gold, count(s.Type) Silver, count(b.Type) Bronze, sum(ifnull(g.Points, 0)) + sum(ifnull(s.Points, 0)) + sum(ifnull(b.Points, 0)) Points from customer c "+
-							"join customermedal cm on c.CustomerID = cm.CustomerID "+
+		final String SQL = "select c.CustomerID, c.Name, count(g.Type) Gold, count(s.Type) Silver, count(b.Type) Bronze, sum(ifnull(g.Points, 0)) + sum(ifnull(s.Points, 0)) + sum(ifnull(b.Points, 0)) Points from customer c "+
+							"left outer join customermedal cm on c.CustomerID = cm.CustomerID "+
 							"left outer join medal g on g.Type = cm.Type and g.Type = 0 "+
 							"left outer join medal s on s.Type = cm.Type and s.Type = 1 "+
-							"left outer join medal b on b.Type = cm.Type and b.Type = 2 "+
-							"group by c.Name, g.Type, s.Type "+
+							"left outer join medal b on b.Type = cm.Type and b.Type = 2 " +
+							"where c.DeletedDate is null and c.Visible = 1 "+
+							"group by c.Name "+
 							"order by points desc";
 		return getJdbcTemplate().query( SQL , customerRankingMapper );
 		
@@ -60,8 +73,7 @@ public class MedalDAO extends JdbcDaoSupport {
 	private static RowMapper<CustomerRanking> customerRankingMapper = new RowMapper<CustomerRanking>() {
 		public CustomerRanking mapRow(ResultSet result, int arg1) throws SQLException {
 			CustomerRanking ran = new CustomerRanking();
-			
-			ran.setName( result.getString( "Name" ));
+			ran.setCustomer( new Customer(result.getInt( "CustomerID" ), result.getString( "Name" )));
 			ran.setGoldCount( result.getInt( "Gold" ));
 			ran.setSilverCount( result.getInt( "Silver" ));
 			ran.setBronzeCount( result.getInt( "Bronze" ));

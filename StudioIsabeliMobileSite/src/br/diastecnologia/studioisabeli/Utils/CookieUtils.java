@@ -23,4 +23,10 @@ public class CookieUtils {
 		return cookie;
 	}
 	
+	public static Cookie toDeleteCookie(  ){
+		Cookie cookie = new Cookie("token", "");
+		cookie.setMaxAge( 0 );
+		return cookie;
+	}
+	
 }

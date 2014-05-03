@@ -9,6 +9,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.diastecnologia.studioisabeli.beans.CustomerMedal;
+import br.diastecnologia.studioisabeli.daos.CustomerTokenDAO;
 import br.diastecnologia.studioisabeli.daos.MedalDAO;
 import br.diastecnologia.studioisabeli.dtos.CustomerRanking;
 import br.diastecnologia.studioisabeli.enums.MedalType;
@@ -19,11 +20,13 @@ public class RankingController extends Controller{
 
 	private MedalDAO medalDao;
 	private StudioSession session;
+	private CustomerTokenDAO customerTokenDao;
 	
-	public RankingController(HttpServletResponse _response, Result _result, StudioSession _session, ServletContext _context, MedalDAO _medalDao) {
+	public RankingController(HttpServletResponse _response, Result _result, StudioSession _session, ServletContext _context, MedalDAO _medalDao, CustomerTokenDAO _customerTokenDao) {
 		super(_response, _result, _context);
 		this.medalDao = _medalDao;
 		this.session = _session;
+		this.customerTokenDao = _customerTokenDao;
 	}
 	
 	@Path("/suas-medalhas")
@@ -53,6 +56,14 @@ public class RankingController extends Controller{
 	public void ranking(){
 		List<CustomerRanking> ranking = medalDao.getRanking();
 		result.include( "ranking", ranking );
+		result.include( "visible", session.getCustomer().isVisible() );
+	}
+	
+	@Path("/mudar-minha-visibilidade")
+	public void toggleVisibility(){
+		session.getCustomer().setVisible( !session.getCustomer().isVisible() );
+		customerTokenDao.updateCustomer(session.getCustomer());
+		result.redirectTo( RankingController.class ).ranking();
 	}
 
 }

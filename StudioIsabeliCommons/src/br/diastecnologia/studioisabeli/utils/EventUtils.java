@@ -9,6 +9,9 @@ import br.diastecnologia.studioisabeli.beans.CalendarEventColor;
 import br.diastecnologia.studioisabeli.beans.CustomerClass;
 import br.diastecnologia.studioisabeli.beans.StudioSchedule;
 import br.diastecnologia.studioisabeli.beans.Week;
+import br.diastecnologia.studioisabeli.dtos.CustomerPresence;
+import br.diastecnologia.studioisabeli.enums.ClassStatus;
+import br.diastecnologia.studioisabeli.enums.ClassType;
 
 public class EventUtils {
 	
@@ -22,7 +25,12 @@ public class EventUtils {
 			if( sche.getClasses().size() > 0 ){
 				for( CustomerClass clazz : sche.getClasses()){
 					customers = customers.replace( ")" , ", " );
-					customers += clazz.getCustomer().getName() + ")";
+					if( clazz.getType() == ClassType.NOT_PRE_SCHEDULED ){
+						customers += clazz.getCustomer().getName() + "*R*)";
+					}else{
+						customers += clazz.getCustomer().getName() + ")";
+					}
+					
 				}
 			}
 			else{
@@ -38,6 +46,22 @@ public class EventUtils {
 		}
 		
 		return events;
+	}
+	
+	public static void setColor( List<CalendarEvent> events , Integer customerID ){
+		for( CalendarEvent event : events ){
+			for( CustomerPresence presence : event.getCustomers() ){
+				if( presence.getCustomer().getCustomerID().equals( customerID )){
+					if( presence.getStatus() == ClassStatus.DONE ){
+						event.setColor(CalendarEventColor.Green );
+					}else if( presence.getStatus() == ClassStatus.NOT_DONE ){
+						event.setColor(CalendarEventColor.Red );
+					}else if( presence.getStatus() == ClassStatus.SCHEDULED ){
+						event.setColor(CalendarEventColor.Blue );
+					}
+				}
+			}
+		}
 	}
 	
 	private static CalendarEvent getEvent( StudioSchedule sche , Week week ){
@@ -58,6 +82,13 @@ public class EventUtils {
 			event.setTitle( "Lotado" );
 			event.setColor( CalendarEventColor.Black );
 		}
+		
+		event.setCustomers(new ArrayList<CustomerPresence>());
+		for( CustomerClass cc : sche.getClasses() ){
+			event.getCustomers().add( new CustomerPresence( cc.getCustomer(), week.getWeekID() , cc.getStatus()) );
+		}
+		
+		event.setWeekID( week.getWeekID() );
 		return event;
 	}
 	

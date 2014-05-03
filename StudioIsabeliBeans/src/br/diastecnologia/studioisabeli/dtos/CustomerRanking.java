@@ -1,18 +1,21 @@
 package br.diastecnologia.studioisabeli.dtos;
 
+import br.diastecnologia.studioisabeli.beans.Customer;
+
 public class CustomerRanking {
 
-	private String name;
+	private Customer customer;
+	public Customer getCustomer() {
+		return customer;
+	}
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 	private Integer goldCount;
 	private Integer silverCount;
 	private Integer bronzeCount;
 	private Integer points;
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 	public Integer getGoldCount() {
 		return goldCount;
 	}

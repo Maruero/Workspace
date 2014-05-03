@@ -11,6 +11,10 @@ public class CustomerScrap {
 	private String text;
 	private Date date;
 	
+	public CustomerScrap(){
+		
+	}
+	
 	public CustomerScrap(Integer customerID, Integer scrapNumber, String text, Date date) {
 		super();
 		this.customerID = customerID;

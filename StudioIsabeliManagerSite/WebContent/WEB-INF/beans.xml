@@ -49,6 +49,15 @@
 		<property name="dBConnection" ref="datasource"/>
 	</bean>
 	
+	<bean id="achievementDao" class="br.diastecnologia.studioisabeli.daos.AchievementDAO">
+		<property name="dBConnection" ref="datasource"/>
+	</bean>
+	
+	<bean id="customerScrapBusiness" class="br.diastecnologia.studioisabeli.business.CustomerScrapBusiness">
+		<constructor-arg ref="customerTokenDao"/>
+		<constructor-arg ref="customerScrapDao"/>
+	</bean>
+	
 	<bean id="customerTokenBusiness" class="br.diastecnologia.studioisabeli.business.CustomerTokenBusiness">
 		<constructor-arg ref="customerTokenDao"/>
 	</bean>

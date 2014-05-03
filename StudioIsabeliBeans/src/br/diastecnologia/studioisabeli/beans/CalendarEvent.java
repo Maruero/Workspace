@@ -1,5 +1,9 @@
 package br.diastecnologia.studioisabeli.beans;
 
+import java.util.List;
+
+import br.diastecnologia.studioisabeli.dtos.CustomerPresence;
+
 public class CalendarEvent {
 
 	private String title;
@@ -7,10 +11,24 @@ public class CalendarEvent {
 	private String end;
 	private CalendarEventColor color;
 	private boolean allDay;
+	private Integer weekID;
 	
+	public Integer getWeekID() {
+		return weekID;
+	}
+	public void setWeekID(Integer weekID) {
+		this.weekID = weekID;
+	}
 	private Integer studioScheduleID;
 	private Integer customersMaxCount;
+	private List<CustomerPresence> customers;
 	
+	public List<CustomerPresence> getCustomers() {
+		return customers;
+	}
+	public void setCustomers(List<CustomerPresence> customers) {
+		this.customers = customers;
+	}
 	public Integer getStudioScheduleID() {
 		return studioScheduleID;
 	}

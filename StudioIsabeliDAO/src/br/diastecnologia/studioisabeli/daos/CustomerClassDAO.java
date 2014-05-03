@@ -25,7 +25,7 @@ public class CustomerClassDAO extends JdbcDaoSupport {
 	}
 	
 	public void updateCustomerClass( CustomerClass clazz ){
-		final String SQL = "update customer set Status = ? where CustomerID = ? and StudioScheduleID = ? and WeekID = ?";
+		final String SQL = "update customerclass set Status = ? where CustomerID = ? and StudioScheduleID = ? and WeekID = ?";
 		getJdbcTemplate().update( SQL , ClassStatus.getIndex(clazz.getStatus()),  clazz.getCustomerID(), clazz.getStudioScheduleID(), clazz.getWeekID());
 	}
 	
@@ -43,20 +43,37 @@ public class CustomerClassDAO extends JdbcDaoSupport {
 	}
 	
 	public List<CustomerClass> getClassesOfWeek( Integer weekID ){
-		final String SQL = "select c.CustomerID, c.Name, cs.StudioScheduleID, cc.WeekID, cc.Type, cc.Status from customer c "+ 
-							"left outer join customerschedule cs on cs.CustomerID = c.CustomerID "+
-							"left outer join customerclass cc on c.CustomerID = cc.CustomerID and cc.StudioScheduleID = cs.StudioScheduleID "+
+		final String SQL = "select c.CustomerID, c.Name, cc.StudioScheduleID, cc.WeekID, cc.Type, cc.Status from customer c "+ 
+							"left outer join customerclass cc on c.CustomerID = cc.CustomerID "+
 							"where cc.WeekID = ? or cc.WeekID is null";
+		
+		
+		
 		return getJdbcTemplate().query( SQL , customerClassMapper , weekID );
 	}
 	
 	public void addCustomerClasses( Integer weekID ){
 		final String SQL = "insert into customerclass (CustomerID, StudioScheduleID, WeekID) " + 
 				"select c.CustomerID, cs.StudioScheduleID, ? from customer c "+ 
-				"left outer join customerschedule cs on cs.CustomerID = c.CustomerID "+
+				"join customerschedule cs on cs.CustomerID = c.CustomerID "+
 				"left outer join customerclass cc on c.CustomerID = cc.CustomerID and cc.StudioScheduleID = cs.StudioScheduleID and cc.WeekID = ? "+
-				"where cc.status is null";
+				"where c.DeletedDate is null and cc.status is null";
 		getJdbcTemplate().update( SQL, weekID, weekID );
+	}
+	
+	public void addCustomerClass( Integer customerID, Integer studioScheduleID, Integer weekID ){
+		final String SQL = "insert into customerclass( CustomerID, StudioScheduleID, WeekID , Type ) values (?,?,?, 1)";
+		getJdbcTemplate().update(SQL, customerID, studioScheduleID, weekID );
+	}
+	
+	public void removeCustomerClass( Integer customerID, Integer studioScheduleID, Integer weekID ){
+		final String SQL = "delete from customerclass where CustomerID = ? and StudioScheduleID = ? and WeekID = ?";
+		getJdbcTemplate().update(SQL, customerID, studioScheduleID, weekID );
+	}
+	
+	public void removeScheduleCustomerClasses( Integer customerID, Integer studioScheduleID, Integer weekID ){
+		final String SQL = "delete from customerclass where CustomerID = ? and StudioScheduleID = ? and WeekID >= ? and Status = 0";
+		getJdbcTemplate().update(SQL, customerID, studioScheduleID, weekID );
 	}
 	
 	private static RowMapper<CustomerClass> customerClassMapper = new RowMapper<CustomerClass>() {
