@@ -36,6 +36,11 @@ public class HomeController extends Controller{
 		this.httpSession = _httpSession;
 	}
 	
+	@Path("/splash")
+	public void splashIndeed( String token ){
+		result.forwardTo( HomeController.class ).splash(token);
+	}
+	
 	@Path("/")
 	public void splash( String token ){
 		if( token != null ){
@@ -69,7 +74,7 @@ public class HomeController extends Controller{
 		Customer customer = customerTokenDAO.getCustomer(token);
 		session.setCustomer(customer);
 		if( session.getCustomer() != null ){
-			response.addCookie( CookieUtils.createCookie(token));
+			response.addCookie( CookieUtils.createCookie("token", token));
 			result.redirectTo( HomeController.class ).tip( null );
 		}else{
 			result.include( "message" , "Token inválido." );

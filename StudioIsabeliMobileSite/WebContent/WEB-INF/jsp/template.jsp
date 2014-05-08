@@ -6,13 +6,23 @@
 <!DOCTYPE html>
 <html lang="pt">
   <head>
+  
+  	<meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <link rel="icon" sizes="196x196" href="apple-touch-icon-196x196-precomposed.png" />
+    
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-57x57-precomposed.png" />
+  
     <meta charset="ISO-8859-1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Studio Isabeli Vilhena - Manager</title>
+    <title>Studio Isabeli</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -78,7 +88,11 @@
      <script src="lib/bootstrap.min.js"></script>
      <script src="lib/dropdown.js"></script>
      <script src="lib/studio-isabeli.js"></script>
+     <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
     <tiles:insertAttribute name="scripts" />
+   
+   <iframe src="cache.html" style="display:none;">
+   	</iframe>
    
   </body>
 </html>

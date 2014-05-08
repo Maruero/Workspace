@@ -26,11 +26,21 @@ public class EventUtils {
 				for( CustomerClass clazz : sche.getClasses()){
 					customers = customers.replace( ")" , ", " );
 					if( clazz.getType() == ClassType.NOT_PRE_SCHEDULED ){
-						customers += clazz.getCustomer().getName() + "*R*)";
+						customers += clazz.getCustomer().getName() + "*R*";
 					}else{
-						customers += clazz.getCustomer().getName() + ")";
+						customers += clazz.getCustomer().getName();
 					}
 					
+					if( (clazz.getAlterBeginMinutes() != null && clazz.getAlterBeginMinutes() != 0) || (clazz.getAlterEndMinutes() != null && clazz.getAlterEndMinutes() != 60)){
+						if( clazz.getAlterBeginMinutes() != null && clazz.getAlterBeginMinutes() != 0 ){
+							customers += " entra às " + sche.getBeginHour() + ":" + clazz.getAlterBeginMinutes();
+						}
+						if(clazz.getAlterEndMinutes() != null && clazz.getAlterEndMinutes() != 60){
+							customers += " sai às " + sche.getBeginHour() + ":" + clazz.getAlterEndMinutes();
+						}
+					}
+					
+					customers+= ")";
 				}
 			}
 			else{
@@ -109,17 +119,32 @@ public class EventUtils {
 		
 		for( StudioSchedule sche : sches ){
 			if( sche.getClasses() != null && sche.getClasses().size() > 0 ){
+				CustomerClass clazz = sche.getClasses().get( 0 );
 				CalendarEvent event = new CalendarEvent();
 				
 				calendar.setTime( week.getBegin() );
 				calendar.add( Calendar.DAY_OF_MONTH, sche.getWeekDay() );
 				calendar.set( Calendar.HOUR_OF_DAY, sche.getBeginHour() );
+				
+				if( clazz.getAlterBeginMinutes()!= null && clazz.getAlterBeginMinutes() != 0){
+					calendar.add( Calendar.MINUTE, clazz.getAlterBeginMinutes() );
+				}else{
+					calendar.set( Calendar.MINUTE, 0 );
+				}
 				event.setStart( Configurations.dateFormat.format( calendar.getTime() ) );
 				
-				calendar.set( Calendar.HOUR_OF_DAY, sche.getEndHour() );
+				if( clazz.getAlterEndMinutes() != null && clazz.getAlterEndMinutes() != 60){
+					calendar.set( Calendar.HOUR_OF_DAY, sche.getBeginHour() );
+					calendar.add( Calendar.MINUTE, clazz.getAlterEndMinutes() );
+				}else{
+					calendar.set( Calendar.MINUTE, 0 );
+					calendar.set( Calendar.HOUR_OF_DAY, sche.getEndHour() );
+				}
+				
+				
 				event.setEnd( Configurations.dateFormat.format( calendar.getTime() ) );
 				
-				CustomerClass clazz = sche.getClasses().get( 0 );
+				
 				switch( clazz.getStatus() ){
 					case DONE:
 						event.setTitle("Realizada");
@@ -140,7 +165,23 @@ public class EventUtils {
 			
 		}
 		
-		return events;
+		List<CalendarEvent> finalEvents = new ArrayList<CalendarEvent>();
+		for( int i=0 ; i<events.size() ; i++ ){
+			
+			CalendarEvent event = events.get( i );
+			if( i > 0){
+				if( events.get( i-1 ).getEnd().equals(event.getStart() ) ){
+					events.get( i-1 ).setEnd( event.getEnd() );
+				}else{
+					finalEvents.add( event );
+				}
+			}else{
+				finalEvents.add( event );
+			}
+			
+		}
+		
+		return finalEvents;
 	}
 }
 

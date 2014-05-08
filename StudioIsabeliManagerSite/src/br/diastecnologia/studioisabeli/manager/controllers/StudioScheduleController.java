@@ -6,15 +6,11 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.diastecnologia.studioisabeli.beans.CalendarEvent;
-import br.diastecnologia.studioisabeli.beans.CalendarEventColor;
 import br.diastecnologia.studioisabeli.beans.CustomerClass;
 import br.diastecnologia.studioisabeli.beans.StudioSchedule;
 import br.diastecnologia.studioisabeli.beans.Week;
@@ -26,6 +22,9 @@ import br.diastecnologia.studioisabeli.daos.StudioScheduleDAO;
 import br.diastecnologia.studioisabeli.dtos.CustomerPresence;
 import br.diastecnologia.studioisabeli.enums.ClassStatus;
 import br.diastecnologia.studioisabeli.utils.EventUtils;
+
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 
 @Resource
 public class StudioScheduleController extends Controller {
@@ -93,8 +92,8 @@ public class StudioScheduleController extends Controller {
 	}
 	
 	@Path("/adicionar-horario-do-aluno")
-	public void addCustomerSchedule( Integer studioScheduleID, Integer customerID ){
-		studioScheduleDao.addCustomerSchedule(studioScheduleID, customerID);
+	public void addCustomerSchedule( Integer studioScheduleID, Integer customerID, Integer alterBeginMinutes, Integer alterEndMinutes ){
+		studioScheduleDao.addCustomerSchedule(studioScheduleID, customerID, alterBeginMinutes, alterEndMinutes);
 		result.use( Results.json() ).from( "Adicionado com sucesso!" ).serialize();
 	}
 	
@@ -124,8 +123,8 @@ public class StudioScheduleController extends Controller {
 	}
 	
 	@Path("/adicionar-reposicao-do-aluno")
-	public void addCustomerClass( Integer studioScheduleID , Integer customerID, Integer weekID ){
-		customerClassDao.addCustomerClass(customerID, studioScheduleID, weekID);
+	public void addCustomerClass( Integer studioScheduleID , Integer customerID, Integer weekID, Integer alterBeginMinutes, Integer alterEndMinutes ){
+		customerClassDao.addCustomerClass(customerID, studioScheduleID, weekID, alterBeginMinutes, alterEndMinutes);
 		result.use( Results.json() ).from( "Removido com sucesso!" ).serialize();
 	}
 }

@@ -26,10 +26,37 @@
 			.no-close .ui-dialog-titlebar-close {
 				display: none 
 			}
+			
+			@media (min-width: 180px){
+				.fc-header-title h2{
+					font-size: 18px;
+				}
+				.fc-content{
+					zoom: 0.8;
+				}
+				.ui-dialog .ui-dialog-titlebar{
+					font-size: 14px;
+				}
+			}
+			
+			@media (min-width: 600px){
+				.fc-header-title h2{
+					font-size: 30px;
+				}
+				.fc-content{
+					zoom: 1;
+				}
+			}
 		</style>
 	</tiles:putAttribute>
 	
 	<tiles:putAttribute name="content">
+		<div id="dialog-class" title="Detalhes do horário" style="display:none;">
+			<div id="dialog-class-content"></div>
+			<div>
+			</div>
+		</div>
+	
 		<div id="dialog-loading" title="Por favor, espere." style="display:none;">
 			<div id="dialog-content"></div>
 			<div>
@@ -46,6 +73,17 @@
 		<script>
 			$(document).ready(function() {
 				
+				$('#dialog-class').dialog({
+					autoOpen: false,
+					modal: true,
+					resizable: false,
+					buttons:{
+						Fechar: function(){
+							$('#dialog-class').dialog('close');
+						}
+					}
+				});
+				
 				$('#menu-agenda-do-studio').addClass("active");
 				
 				var date = new Date();
@@ -59,6 +97,32 @@
 						center: 'title',
 						right: ''
 					},
+					eventClick: function(event, element) {
+						var beginHour = event.start.getHours();
+						if( beginHour < 10 ){
+							beginHour = '0' + beginHour;
+						}
+						
+						var beginMinute = event.start.getMinutes();
+						if( beginMinute < 10 ){
+							beginMinute = '0' + beginMinute;
+						}
+						
+						var endHour = event.end.getHours();
+						if( endHour < 10 ){
+							endHour = '0' + endHour;
+						}
+						
+						var endMinute = event.end.getMinutes();
+						if( endMinute < 10 ){
+							endMinute = '0' + endMinute;
+						}
+						
+						var content = beginHour + ":" + beginMinute + " até " + endHour + ":" + endMinute +'<br>';
+						
+						$('#dialog-class-content').html(content + event.title);
+						$('#dialog-class').dialog('open');
+					},
 					monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
 					dayNamesShort: ['Dom','Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
 					columnFormat: {week: 'ddd dd/MM'},
@@ -69,6 +133,7 @@
 					timeFormat: 'HH:mm{ - HH:mm}',
 					minTime: 5,
 					maxTime: 21,
+					height: 1400,
 					allDaySlot: false,
 					selectable: false,
 					selectHelper: true,

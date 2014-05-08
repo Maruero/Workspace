@@ -1,10 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-
-
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt" manifest="cacheManifest.appcache">
   <head>
   
   	<meta name="mobile-web-app-capable" content="yes">
@@ -36,17 +31,19 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <tiles:insertAttribute name="head" />
-    
   </head>
 
   <body>
 
-
-
     <!-- Begin page content -->
     <div class="container">
-     	<tiles:insertAttribute name="content" />
+     	<div class="jumbotron">
+		  <h1>Studio Isabeli Vilhena</h1>
+		  <p>Atividades Físicas Personalizadas</p>
+		  <br>
+		  <p>Não foi detectado uma conexão com a internet.</p>
+		  <p>Para usar o aplicativo você precisa de internet.</p>
+		</div>
     </div>
 
     <div id="footer">
@@ -60,13 +57,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="lib/jquery.min.js"></script>
-     <script src="lib/bootstrap.min.js"></script>
-     <script src="lib/studio-isabeli.js"></script>
-     <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
-    <tiles:insertAttribute name="scripts" />
-   
-   	<iframe src="cache.html" style="display:none;">
-   	</iframe>
-   
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/studio-isabeli.js"></script>
   </body>
 </html>

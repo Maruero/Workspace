@@ -4,11 +4,11 @@ import javax.servlet.http.Cookie;
 
 public class CookieUtils {
 
-	public static String getCookie( Cookie[] cookies ){
+	public static String getCookie( String name, Cookie[] cookies ){
 		
 		if( cookies != null ){
 			for( Cookie cookie : cookies ){
-				if( cookie.getName().equals( "token" )){
+				if( cookie.getName().equals( name )){
 					return cookie.getValue();
 				}
 			}
@@ -17,8 +17,8 @@ public class CookieUtils {
 		return null;
 	}
 	
-	public static Cookie createCookie( String token ){
-		Cookie cookie = new Cookie("token", token);
+	public static Cookie createCookie( String name, String token ){
+		Cookie cookie = new Cookie(name, token);
 		cookie.setMaxAge( 60 * 60 * 60);
 		return cookie;
 	}

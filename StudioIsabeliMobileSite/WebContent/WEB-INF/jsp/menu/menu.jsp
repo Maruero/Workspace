@@ -6,9 +6,19 @@
 	
 	<tiles:putAttribute name="content">
 		<div class="jumbotron">
-		  <h2>Sua próxima aula é</h2>
-		  <p>${nextClass}</p>
+		  <h2>Sua pr&oacute;xima aula &eacute;</h2>
+		  <p id="dia">${nextClass}</p>
 		</div>
 	</tiles:putAttribute>
+	
+	<tiles:putAttribute name="scripts">
+            <script>
+              $(document).ready(function() {
+           var dia = $('#dia').html();
+           dia = dia.replace('Monday', 'Segunda').replace('Tuesday', 'Terça').replace('Wednesday', 'Quarta').replace('Thursday', 'Quinta').replace('Friday', 'Sexta');
+           $('#dia').html(dia);
+                });
+            </script>
+	  </tiles:putAttribute>
 	
 </tiles:insertDefinition>

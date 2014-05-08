@@ -64,7 +64,7 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#menu-home').removeClass("active");
-				$('#menu-alunos').addClass("active");
+				$('#menu-suas-metas').addClass("active");
 				
 				addBadge();
 				

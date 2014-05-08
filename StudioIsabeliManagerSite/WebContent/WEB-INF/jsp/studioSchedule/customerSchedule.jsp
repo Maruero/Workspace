@@ -26,7 +26,7 @@
 	<tiles:putAttribute name="content">
 		<h4>${customer.name}</h4>
 		<div id="dialog-loading" title="Por favor, espere." style="display:none;">
-			<div id="dialog-content"></div>
+			<div id="dialog-content-loading"></div>
 			<div>
 				Carregando agenda!
 			</div>
@@ -262,11 +262,16 @@
 			var customerID = ${customer.customerID};
 			var studioScheduleID = $('#dialog-content').attr("event-studioScheduleID");
 			
+			var alterBeginMinutes = prompt("Horário de início:", "00");
+			var alterEndMinutes = prompt("Horário de término:", "60");
+			
 			$.ajax({
 				url: 'adicionar-horario-do-aluno',
 				data: {
 					'studioScheduleID' : studioScheduleID,
-					'customerID' : customerID
+					'customerID' : customerID,
+					'alterBeginMinutes' : alterBeginMinutes,
+					'alterEndMinutes' : alterEndMinutes
 				}, 
 				type: 'post',
 				success: function(data){
@@ -285,12 +290,17 @@
 			var studioScheduleID = $('#dialog-content').attr("event-studioScheduleID");
 			var weekID = $('#dialog-content').attr("event-weekID");
 			
+			var alterBeginMinutes = prompt("Entra no minuto:", "00");
+			var alterEndMinutes = prompt("Sai no minuto:", "60");
+			
 			$.ajax({
 				url: 'adicionar-reposicao-do-aluno',
 				data: {
 					'studioScheduleID' : studioScheduleID,
 					'customerID' : customerID,
-					'weekID' : weekID
+					'weekID' : weekID,
+					'alterBeginMinutes' : alterBeginMinutes,
+					'alterEndMinutes' : alterEndMinutes
 				}, 
 				type: 'post',
 				success: function(data){

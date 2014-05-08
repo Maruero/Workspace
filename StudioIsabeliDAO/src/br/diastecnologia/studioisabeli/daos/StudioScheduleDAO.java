@@ -24,7 +24,7 @@ public class StudioScheduleDAO extends JdbcDaoSupport{
 	}
 	
 	public Date getNextClass( Integer customerID ){
-		final String SQL = "select date_add(adddate(w.Begin, ss.WeekDay), INTERVAL ss.BeginHour HOUR) as date from customerclass cc "+
+		final String SQL = "select date_add(date_add(adddate(w.Begin, ss.WeekDay), INTERVAL ss.BeginHour HOUR), INTERVAL cc.AlterBeginMinutes MINUTE) as date from customerclass cc "+
 							"join week w on cc.WeekID = w.WeekID "+
 							"join studioschedule ss on ss.StudioScheduleID = cc.StudioScheduleID "+
 							"where CustomerID = ? "+
@@ -66,9 +66,9 @@ public class StudioScheduleDAO extends JdbcDaoSupport{
 		return weeks.size() > 0 ? weeks.get( 0 ) : null;
 	}
 	
-	public void addCustomerSchedule( Integer studioScheduleID, Integer customerID ){
-		final String SQL = "insert into customerschedule (StudioScheduleID, CustomerID) values (?,?)";
-		getJdbcTemplate().update(SQL, studioScheduleID, customerID);
+	public void addCustomerSchedule( Integer studioScheduleID, Integer customerID , Integer alterBeginMinutes, Integer alterEndMinutes){
+		final String SQL = "insert into customerschedule (StudioScheduleID, CustomerID, AlterBeginMinutes, AlterEndMinutes) values (?,?, ?,?)";
+		getJdbcTemplate().update(SQL, studioScheduleID, customerID, alterBeginMinutes, alterEndMinutes);
 	}
 	
 	public void removeCustomerSchedule( Integer studioScheduleID, Integer customerID ){

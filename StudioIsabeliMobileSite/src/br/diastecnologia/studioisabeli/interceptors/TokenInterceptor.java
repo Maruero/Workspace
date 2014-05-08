@@ -2,6 +2,8 @@ package br.diastecnologia.studioisabeli.interceptors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 import br.com.caelum.vraptor.InterceptionException;
 import br.com.caelum.vraptor.Intercepts;
 import br.com.caelum.vraptor.Result;
@@ -22,6 +24,8 @@ public class TokenInterceptor implements Interceptor{
 	private Result result;
 	private HttpServletRequest request;
 	
+	private Logger logger = Logger.getLogger("Studio");
+	
 	public TokenInterceptor( HttpServletRequest _request, Result _result, StudioSession _session , CustomerTokenDAO _customerTokenDAO){
 		this.request = _request;
 		this.session = _session;
@@ -30,6 +34,8 @@ public class TokenInterceptor implements Interceptor{
 	}
 
 	public boolean accepts(ResourceMethod method) {
+		
+		logger.info(method.getMethod().getName());
 		
 		if( method.getMethod().getName().equals("token")){
 			return false;
@@ -41,8 +47,8 @@ public class TokenInterceptor implements Interceptor{
 	@Override
 	public void intercept(InterceptorStack stack, ResourceMethod method, Object params) throws InterceptionException {
 		if( session.getCustomer() == null ){
-			String token = CookieUtils.getCookie( request.getCookies() );
-			if( method.getMethod().getName().equals( "splash" )){
+			String token = CookieUtils.getCookie( "token", request.getCookies() );
+			if( method.getMethod().getName().equals( "splash" ) || method.getMethod().getName().equals( "splashIndeed" )){
 				
 				Customer customer = customerTokenDAO.getCustomer(token);
 				session.setCustomer(customer);
@@ -53,7 +59,9 @@ public class TokenInterceptor implements Interceptor{
 				session.setCustomer(customer);
 				if( session.getCustomer() == null ){
 					result.redirectTo( HomeController.class ).token();
+					return;
 				}
+				result.redirectTo( HomeController.class ).splash(token);
 			}
 		}else{
 			stack.next(method, params);

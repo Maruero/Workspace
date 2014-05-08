@@ -18,7 +18,7 @@
 			$(document).ready(function() {
 				setTimeout(function() {
 					window.location = 'tip';
-				}, "2000");
+				}, "4000");
 			});
 		</script>
 	</tiles:putAttribute>

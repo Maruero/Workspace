@@ -10,7 +10,7 @@
 				<h3 class="painel-title">Ranking</h3>
 			</div>
 			<div class="panel-body">
-				<h4>
+				<h4 style="text-align:center;">
 					Atualmente sua visibilidade é
 					<c:choose>
 						<c:when test="${visible}">
@@ -21,17 +21,9 @@
 						</c:otherwise>
 					</c:choose>
 				</h4>
-				<h5>
-					Deseja mudar sua visibilidade para
-					<c:choose>
-						
-						<c:when test="${visible}">
-							invisível.
-						</c:when>
-						<c:otherwise>
-							visível
-						</c:otherwise>
-					</c:choose>
+				<h5 style="text-align:center;">
+					Deseja mudar?
+					<br><br>
 					<button type="button" class="btn btn-primary" onClick="toggleVisibility();">Clique aqui!</button>
 				</h5>
 			</div>

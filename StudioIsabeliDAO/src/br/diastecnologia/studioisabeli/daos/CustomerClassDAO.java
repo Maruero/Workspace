@@ -35,15 +35,14 @@ public class CustomerClassDAO extends JdbcDaoSupport {
 	}
 	
 	public List<CustomerClass> getClassesOfWeek( Integer weekID , Integer customerID ){
-		final String SQL = "select c.CustomerID, c.Name, cs.StudioScheduleID, cc.WeekID, cc.Type, cc.Status from customer c "+ 
-							"left outer join customerschedule cs on cs.CustomerID = c.CustomerID "+
-							"left outer join customerclass cc on c.CustomerID = cc.CustomerID and cc.StudioScheduleID = cs.StudioScheduleID "+
+		final String SQL = "select c.CustomerID, c.Name, cc.StudioScheduleID, cc.WeekID, cc.Type, cc.Status, cc.AlterBeginMinutes, cc.AlterEndMinutes from customer c "+ 
+							"left outer join customerclass cc on c.CustomerID = cc.CustomerID "+
 							"where cc.WeekID = ? and cc.CustomerID = ?";
 		return getJdbcTemplate().query( SQL , customerClassMapper , weekID , customerID );
 	}
 	
 	public List<CustomerClass> getClassesOfWeek( Integer weekID ){
-		final String SQL = "select c.CustomerID, c.Name, cc.StudioScheduleID, cc.WeekID, cc.Type, cc.Status from customer c "+ 
+		final String SQL = "select c.CustomerID, c.Name, cc.StudioScheduleID, cc.WeekID, cc.Type, cc.Status, cc.AlterBeginMinutes, cc.AlterEndMinutes from customer c "+ 
 							"left outer join customerclass cc on c.CustomerID = cc.CustomerID "+
 							"where cc.WeekID = ? or cc.WeekID is null";
 		
@@ -53,17 +52,17 @@ public class CustomerClassDAO extends JdbcDaoSupport {
 	}
 	
 	public void addCustomerClasses( Integer weekID ){
-		final String SQL = "insert into customerclass (CustomerID, StudioScheduleID, WeekID) " + 
-				"select c.CustomerID, cs.StudioScheduleID, ? from customer c "+ 
+		final String SQL = "insert into customerclass (CustomerID, StudioScheduleID, WeekID, AlterBeginMinutes, AlterEndMinutes) " + 
+				"select c.CustomerID, cs.StudioScheduleID, ?, cs.AlterBeginMinutes, cs.AlterEndMinutes from customer c "+ 
 				"join customerschedule cs on cs.CustomerID = c.CustomerID "+
 				"left outer join customerclass cc on c.CustomerID = cc.CustomerID and cc.StudioScheduleID = cs.StudioScheduleID and cc.WeekID = ? "+
 				"where c.DeletedDate is null and cc.status is null";
 		getJdbcTemplate().update( SQL, weekID, weekID );
 	}
 	
-	public void addCustomerClass( Integer customerID, Integer studioScheduleID, Integer weekID ){
-		final String SQL = "insert into customerclass( CustomerID, StudioScheduleID, WeekID , Type ) values (?,?,?, 1)";
-		getJdbcTemplate().update(SQL, customerID, studioScheduleID, weekID );
+	public void addCustomerClass( Integer customerID, Integer studioScheduleID, Integer weekID , Integer alterBeginMinutes, Integer alterEndMinutes){
+		final String SQL = "insert into customerclass( CustomerID, StudioScheduleID, WeekID , Type, AlterBeginMinutes, AlterEndMinutes ) values (?,?,?, 1, ?,?)";
+		getJdbcTemplate().update(SQL, customerID, studioScheduleID, weekID , alterBeginMinutes, alterEndMinutes);
 	}
 	
 	public void removeCustomerClass( Integer customerID, Integer studioScheduleID, Integer weekID ){
@@ -92,6 +91,9 @@ public class CustomerClassDAO extends JdbcDaoSupport {
 			
 			int status = result.getInt( "Status" );
 			customerClass.setStatus( ClassStatus.values()[status]);
+			
+			customerClass.setAlterBeginMinutes( result.getInt( "AlterBeginMinutes" ));
+			customerClass.setAlterEndMinutes( result.getInt( "AlterEndMinutes" ));
 			
 			return customerClass;
 		}
